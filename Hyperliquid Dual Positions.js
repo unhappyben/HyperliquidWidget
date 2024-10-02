@@ -4,7 +4,7 @@
 
 // Configuration
 const CONFIG = {
-WALLET_ADDRESS: '0x1962905b0a2d0ce7907ae1a0d17f3e4a1f63dfb7',  // Add your wallet address here
+  WALLET_ADDRESS: '',  // Add your wallet address here
   API_ENDPOINT: 'https://api.hyperliquid.xyz/info',
   WIDGET_MODE: 'latest', // 'specific' for specific coins, 'latest' for latest trades
   COIN_FILTERS: {
@@ -170,4 +170,62 @@ async function populateTableWithPositions(table, positions) {
   let leftPosition, rightPosition
 
   if (CONFIG.WIDGET_MODE === 'specific') {
-    leftPosition = positions.find(p
+    leftPosition = positions.find(p => p.position.coin === CONFIG.COIN_FILTERS.LEFT)
+    rightPosition = positions.find(p => p.position.coin === CONFIG.COIN_FILTERS.RIGHT)
+  } else if (CONFIG.WIDGET_MODE === 'latest') {
+    [leftPosition, rightPosition] = positions
+      .sort((a, b) => b.position.timestamp - a.position.timestamp)
+      .slice(0, 2)
+  }
+
+  await addPositionColumn(table, leftPosition, 'LEFT')
+  addSeparator(table)
+  await addPositionColumn(table, rightPosition, 'RIGHT')
+}
+
+// Add a position column to the table
+async function addPositionColumn(table, position, side) {
+  const column = table.addStack()
+  column.layoutVertically()
+  column.centerAlignContent()
+  column.size = new Size(0, 0)
+  column.flexGrow = 1
+  
+  if (position) {
+    await createPositionStack(column, position)
+  } else {
+    createCenteredText(column, CONFIG.WIDGET_MODE === 'specific' 
+      ? `No ${CONFIG.COIN_FILTERS[side]} positions` 
+      : "No positions", 
+      CONFIG.COLORS.TEXT, CONFIG.FONTS.DETAILS)
+  }
+}
+
+// Add a separator between position columns
+function addSeparator(table) {
+  const separator = table.addStack()
+  separator.layoutVertically()
+  separator.backgroundColor = CONFIG.COLORS.SEPARATOR
+  separator.size = new Size(1, 110)
+}
+
+// Main function to run the widget
+async function run() {
+  try {
+    let positions = await fetchOpenPositions()
+    let widget = await createWidget(positions)
+    
+    if (config.runsInWidget) {
+      Script.setWidget(widget)
+    } else {
+      widget.presentMedium()
+    }
+  } catch (error) {
+    console.error("Error in main function:", error)
+    let errorWidget = new ListWidget()
+    errorWidget.addText("Error: " + error.message)
+    Script.setWidget(errorWidget)
+  }
+}
+
+await run()
