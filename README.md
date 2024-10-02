@@ -1,5 +1,5 @@
 # HyperliquidWidget
 Two iOS Scriptable Widgets that show Hyperliquid positions based on:
-- a single token ticker
-- latest two trade
-- two token tickers
+- A single token ticker
+- Latest two trades 
+- Two token tickers
