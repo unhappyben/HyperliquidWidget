@@ -28,9 +28,16 @@ async function fetchOpenPositions() {
 }
 
 // Determine if a position is long or short
-function getPositionDirection(position) {
-  const size = parseFloat(position.szi)
-  return size > 0 ? "Long" : size < 0 ? "Short" : "Neutral"
+function getPositionDirection(unrealizedPnl, entryPrice, currentPrice) {
+  const pnl = parseFloat(unrealizedPnl)
+  const entry = parseFloat(entryPrice)
+  const current = parseFloat(currentPrice)
+
+  if (pnl > 0 && entry < current) return "Long"
+  if (pnl < 0 && entry > current) return "Long"
+  if (pnl > 0 && entry > current) return "Short"
+  if (pnl < 0 && entry < current) return "Short"
+  return "" // Return empty string for neutral or undefined cases
 }
 
 // Create widget with position information
@@ -68,7 +75,7 @@ function addNoPositionsText(widget) {
 async function addPositionDetails(widget, position) {
   const p = position.position
   const currentPrice = parseFloat(p.positionValue) / parseFloat(p.szi)
-  const direction = getPositionDirection(p)
+  const direction = getPositionDirection(p.unrealizedPnl, p.entryPx, currentPrice)
 
   await setWidgetBackground(widget, p.unrealizedPnl)
   addWidgetTitle(widget)
@@ -117,8 +124,10 @@ function addPositionInfo(widget, p, direction, currentPrice) {
 
 // Add coin and direction information
 function addCoinInfo(widget, coin, direction) {
-  let coinText = widget.addText(`${coin} ${direction}`)
-  coinText.textColor = direction === "Long" ? new Color("#90EE90") : new Color("#FF6961")
+  let coinText = widget.addText(`${coin}${direction ? ' ' + direction : ''}`)
+  coinText.textColor = direction === "Long" ? new Color("#90EE90") : 
+                       direction === "Short" ? new Color("#FF6961") : 
+                       Color.white() // Default color for neutral/undefined
   coinText.font = Font.boldSystemFont(14)
 }
 
