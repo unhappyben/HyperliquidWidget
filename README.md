@@ -7,3 +7,14 @@ Two iOS Scriptable Widgets that show Hyperliquid positions based on:
 # Requirements 
 1. Download Scriptable from the iOS App Store 
 2. Wallet address with at least 1 open position on Hyperliquid
+
+# Output of Widget 
+## Single Token Ticker 
+### Single Token Positive PnL
+![SinglePositive](https://i.ibb.co/Q63DWcn/IMG-2689.jpg)
+
+### Single Token Negative PnL
+![SingleNegative](https://i.ibb.co/q5kfnB4/IMG-2688.jpg)
+
+## Two Token Tickers 
+![alt text](http://url/to/img.png)
