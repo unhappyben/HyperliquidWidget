@@ -17,9 +17,4 @@ Two iOS Scriptable Widgets that show Hyperliquid positions based on:
 ![SingleNegative](https://i.ibb.co/q5kfnB4/IMG-2688.jpg)
 
 ## Two Token Tickers 
-![TwoTokenTickers](https://i.ibb.co/q5kfnB4/IMG-2688.jpg)
-
-
-
-
-
+![TwoTokenTickers](https://i.ibb.co/VTjFgnV/IMG-2691.jpg)
