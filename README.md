@@ -14,7 +14,31 @@ Two iOS Scriptable Widgets that show Hyperliquid positions based on:
 3. Copy the script code
 4. Update the following constants with your information:
 
-      ```javascriptCopyconst WALLET_ADDRESS = ""```
+For Single Position update the configs here:
+```
+const CONFIG = {
+  WALLET_ADDRESS:  '', //Add your wallet address here
+  API_ENDPOINT: 'https://api.hyperliquid.xyz/info',
+  COIN_FILTER: '', // Add your desired coin filter here (leave empty for all coins)
+  BACKGROUNDS: {
+    POSITIVE: 'https://i.ibb.co/6H7LYFy/cash.png',
+    NEGATIVE: 'https://i.ibb.co/ggbtZbT/IMG-2685.png'
+  }
+}
+```
+
+
+For Two Positions update the configs here:
+```
+const CONFIG = {
+  WALLET_ADDRESS: '',  // Add your wallet address here
+  API_ENDPOINT: 'https://api.hyperliquid.xyz/info',
+  WIDGET_MODE: 'latest', // 'specific' for specific coins, 'latest' for latest trades
+  COIN_FILTERS: {
+    LEFT: '', // Add coin you have position in here shown on left
+    RIGHT: '' // Add coin you have position in here shown on right
+  }
+```
 5. Add the widget to your home screen:
 
       - Long press your home screen
